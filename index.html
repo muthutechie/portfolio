@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muthu — Founder, Visar Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0f0e0c;
+    --paper: #f5f0e8;
+    --accent: #c84b2f;
+    --gold: #b8860b;
+    --muted: #6b6560;
+    --border: #d4cfc7;
+    --card: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    padding: 6rem 3rem 4rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 6vw, 5.5rem);
+    line-height: 1.05;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-name span {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 420px;
+    margin-bottom: 3rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--ink);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    transition: all 0.25s;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    background: var(--ink);
+    color: var(--paper);
+    transform: translateY(-2px);
+  }
+
+  .hero-right {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeUp 0.9s 0.2s ease both;
+    opacity: 0;
+  }
+
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 3rem;
+    max-width: 380px;
+    width: 90%;
+    position: relative;
+    box-shadow: 8px 8px 0 var(--border);
+  }
+
+  .hero-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    color: var(--accent);
+    opacity: 0.12;
+    position: absolute;
+    top: -1rem;
+    left: 1.5rem;
+    line-height: 1;
+  }
+
+  .hero-card p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-card-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hero-stat-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-stat h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .hero-stat p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-style: normal;
+    margin: 0;
+  }
+
+  /* DIAGONAL DIVIDER */
+  .divider {
+    width: 100%;
+    height: 60px;
+    background: var(--ink);
+    clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);
+    margin-top: -1px;
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-left h2 em {
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  .about-left p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.7);
+    margin-bottom: 1rem;
+  }
+
+  .about-right {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    border: 1px solid rgba(245,240,232,0.15);
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--accent);
+  }
+
+  .skill-card h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-card p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(245,240,232,0.6);
+    margin: 0;
+  }
+
+  /* DIVIDER REVERSE */
+  .divider-reverse {
+    width: 100%;
+    height: 60px;
+    background: var(--ink);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 60%);
+    margin-bottom: -1px;
+  }
+
+  /* VISAR SECTION */
+  .visar {
+    padding: 6rem 4rem;
+    background: var(--paper);
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .section-title em { color: var(--accent); font-style: italic; }
+
+  .visar-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .visar-card {
+    border: 1px solid var(--border);
+    padding: 2rem;
+    background: var(--card);
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .visar-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 3px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  .visar-card:hover::after { width: 100%; }
+  .visar-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+
+  .visar-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .visar-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .visar-card p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  /* PROJECTS */
+  .projects {
+    padding: 6rem 4rem;
+    background: #f9f5ed;
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 3rem;
+    transition: box-shadow 0.25s;
+  }
+
+  .project-card:hover {
+    box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+  }
+
+  .project-preview {
+    background: var(--ink);
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 320px;
+  }
+
+  .project-preview-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .project-screen {
+    background: rgba(245,240,232,0.05);
+    border: 1px solid rgba(245,240,232,0.1);
+    border-radius: 2px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .screen-bar {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .screen-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(245,240,232,0.2);
+  }
+
+  .screen-line {
+    height: 6px;
+    background: rgba(245,240,232,0.08);
+    border-radius: 2px;
+    margin-bottom: 0.4rem;
+  }
+
+  .screen-line.accent { background: rgba(200,75,47,0.4); width: 60%; }
+  .screen-line.short { width: 40%; }
+  .screen-line.med { width: 75%; }
+
+  .project-live-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .project-live-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4ade80;
+    animation: pulse 2s infinite;
+  }
+
+  .project-info {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .project-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .project-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .project-info p {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  /* GOALS */
+  .goals {
+    padding: 6rem 4rem;
+    background: var(--paper);
+  }
+
+  .goals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .goal-card {
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    background: var(--card);
+    position: relative;
+  }
+
+  .goal-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: var(--accent);
+    opacity: 0.12;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .goal-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .goal-items {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .goal-items li {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .goal-items li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.8rem;
+  }
+
+  /* CONTACT */
+  .contact {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-left h2 em { color: var(--accent); font-style: italic; }
+
+  .contact-left p {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 2rem;
+  }
+
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-detail-icon {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    min-width: 60px;
+  }
+
+  .contact-detail span {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.7);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    background: rgba(245,240,232,0.05);
+    border: 1px solid rgba(245,240,232,0.15);
+    color: var(--paper);
+    padding: 0.85rem 1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .form-group select option {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    border-color: var(--accent);
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-success {
+    display: none;
+    padding: 1rem;
+    background: rgba(74, 222, 128, 0.1);
+    border: 1px solid rgba(74, 222, 128, 0.3);
+    color: #4ade80;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #080807;
+    color: rgba(245,240,232,0.3);
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--accent);
+    font-style: italic;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 6rem 1.5rem 2rem; }
+    .hero-right { padding: 2rem 1.5rem 4rem; }
+    .about, .contact { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
+    .visar { padding: 4rem 1.5rem; }
+    .visar-grid { grid-template-columns: 1fr; }
+    .projects { padding: 4rem 1.5rem; }
+    .project-card { grid-template-columns: 1fr; }
+    .goals { padding: 4rem 1.5rem; }
+    .goals-grid { grid-template-columns: 1fr; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Visar Technologies</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#visar">Services</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#goals">Vision</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Available for Projects & Leadership Roles</div>
+    <h1 class="hero-name">Muthu<span>.</span></h1>
+    <p class="hero-title">Founder, Visar Technologies · Engineering Leader</p>
+    <p class="hero-desc">
+      I build software that solves real business problems — not just code that works, but systems that grow with you. 10 years turning complex requirements into clean, reliable applications.
+    </p>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-primary">Start a Conversation</a>
+      <a href="#projects" class="btn-secondary">See My Work</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-card">
+      <p>Insight drives every decision. Integration connects every layer. Impact is the only measure that matters.</p>
+      <div class="hero-card-meta">Visar Technologies · Chennai, India</div>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <h3>10+</h3>
+          <p>Years Building</p>
+        </div>
+        <div class="hero-stat">
+          <h3>PHP · Java · React</h3>
+          <p>Core Stack</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER -->
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-left fade-in">
+    <h2>Engineering with <em>purpose.</em> Building with intention.</h2>
+    <p>
+      I'm Muthu, a Lead Software Engineer based in Chennai with a decade of experience building web and mobile applications across PHP, Java, React, and MySQL — with growing work in AI integration.
+    </p>
+    <p>
+      I founded Visar Technologies to serve businesses that are too ambitious for templates but not ready for enterprise-scale IT teams. The sweet spot where real technology meets real people.
+    </p>
+    <p>
+      Beyond code, I lead communities — managing a weekly self-development group where I've learned that the best engineering is a lot like the best leadership: listen first, build second.
+    </p>
+  </div>
+
+  <div class="about-right fade-in">
+    <div class="skill-card">
+      <h4>Web Apps</h4>
+      <p>Full-stack custom applications built to solve your specific business problem — not adapted templates.</p>
+    </div>
+    <div class="skill-card">
+      <h4>Mobile</h4>
+      <p>Cross-platform mobile experiences that work where your customers are, seamlessly.</p>
+    </div>
+    <div class="skill-card">
+      <h4>Leadership</h4>
+      <p>Engineering team leadership, architecture decisions, and technical strategy for growing startups.</p>
+    </div>
+    <div class="skill-card">
+      <h4>AI Integration</h4>
+      <p>Practical AI features woven into existing products — not gimmicks, but genuine capability uplift.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER REVERSE -->
+<div class="divider-reverse"></div>
+
+<!-- VISAR SECTION -->
+<section class="visar" id="visar">
+  <div class="section-label">Visar Technologies</div>
+  <h2 class="section-title fade-in">Insight. Integrate. <em>Impact.</em></h2>
+  <p style="color: var(--muted); max-width: 520px; line-height: 1.75; font-size: 0.95rem;" class="fade-in">
+    We build custom web applications for small and mid-sized businesses ready to move beyond spreadsheets, WhatsApp orders, and manual processes — without the cost of a corporate IT team.
+  </p>
+
+  <div class="visar-grid">
+    <div class="visar-card fade-in">
+      <div class="visar-icon">🧩</div>
+      <h3>Custom Web Applications</h3>
+      <p>Billing systems, inventory management, booking platforms, CRMs — built precisely for how your business actually works.</p>
+    </div>
+    <div class="visar-card fade-in">
+      <div class="visar-icon">📱</div>
+      <h3>Business Portals & Dashboards</h3>
+      <p>Real-time visibility into your operations. Make decisions with data, not guesswork. Accessible from any device.</p>
+    </div>
+    <div class="visar-card fade-in">
+      <div class="visar-icon">🔗</div>
+      <h3>Integration & Automation</h3>
+      <p>Connect your existing tools. Eliminate repetitive manual work. Let your team focus on what actually matters.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">Featured Work</div>
+  <h2 class="section-title fade-in">Built. <em>Deployed. Real.</em></h2>
+
+  <div class="project-card fade-in">
+    <div class="project-preview">
+      <div class="project-preview-header">Live Product · Deployed on Vercel</div>
+      <div class="project-screen">
+        <div class="screen-bar">
+          <div class="screen-dot"></div>
+          <div class="screen-dot"></div>
+          <div class="screen-dot"></div>
+        </div>
+        <div class="screen-line accent"></div>
+        <div class="screen-line med"></div>
+        <div class="screen-line short"></div>
+        <div class="screen-line med"></div>
+        <div class="screen-line short"></div>
+        <div class="screen-line accent" style="width:45%"></div>
+      </div>
+      <div class="project-live-tag">Live & Accessible</div>
+    </div>
+
+    <div class="project-info">
+      <div class="project-type">Point of Sale System</div>
+      <h3>VogueManager POS</h3>
+      <p>
+        A complete retail point-of-sale system built for Indian small businesses. Includes real-time billing with GST calculation, inventory management with restock alerts, sales history, invoice printing, and a live dashboard — all in one clean interface.
+      </p>
+      <div class="project-tags">
+        <span class="tag">Billing & GST</span>
+        <span class="tag">Inventory</span>
+        <span class="tag">Sales Analytics</span>
+        <span class="tag">Invoice Print</span>
+        <span class="tag">React</span>
+      </div>
+      <a href="https://vogue-lilac.vercel.app/" target="_blank" class="btn-primary" style="align-self: flex-start;">View Live Demo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- GOALS -->
+<section class="goals" id="goals">
+  <div class="section-label">The Road Ahead</div>
+  <h2 class="section-title fade-in">Where <em>Visar</em> is going.</h2>
+
+  <div class="goals-grid">
+    <div class="goal-card fade-in">
+      <div class="goal-year">1yr</div>
+      <h3>Year One — Foundation</h3>
+      <ul class="goal-items">
+        <li>3 to 5 paying clients from warm network and referrals</li>
+        <li>Establish Visar as a trusted boutique tech partner in Chennai</li>
+        <li>Build a repeatable delivery process for custom web apps</li>
+        <li>Launch first SaaS product concept based on client patterns</li>
+      </ul>
+    </div>
+    <div class="goal-card fade-in">
+      <div class="goal-year">5yr</div>
+      <h3>Year Five — Scale</h3>
+      <ul class="goal-items">
+        <li>Recognised boutique software firm with a small, expert team</li>
+        <li>At least one live SaaS product with recurring revenue</li>
+        <li>Serve 20+ businesses across retail, healthcare, and education</li>
+        <li>A firm known for genuine impact, not just deliverables</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="divider"></div>
+<section class="contact" id="contact">
+  <div class="contact-left fade-in">
+    <h2>Let's build something <em>meaningful.</em></h2>
+    <p>
+      Whether you're a business ready to digitise your operations, or a startup looking for an engineering leader — I'd love to hear what you're working on.
+    </p>
+    <div class="contact-detail">
+      <span class="contact-detail-icon">Location</span>
+      <span>Chennai, India</span>
+    </div>
+    <div class="contact-detail">
+      <span class="contact-detail-icon">Open to</span>
+      <span>Custom Projects · EM / Head of Eng Roles</span>
+    </div>
+    <div class="contact-detail">
+      <span class="contact-detail-icon">Company</span>
+      <span>Visar Technologies</span>
+    </div>
+  </div>
+
+  <div class="fade-in">
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="How should I address you?" required />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" placeholder="your@email.com" required />
+      </div>
+      <div class="form-group">
+        <label>I'm reaching out about</label>
+        <select required>
+          <option value="" disabled selected>Select a purpose</option>
+          <option>A custom software project</option>
+          <option>Engineering leadership role</option>
+          <option>Partnership or collaboration</option>
+          <option>General enquiry</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell me more</label>
+        <textarea placeholder="Describe what you're building or looking for..." required></textarea>
+      </div>
+      <button type="submit" class="btn-primary">Send Message →</button>
+      <div class="form-success" id="formSuccess">✓ Message received. I'll be in touch shortly.</div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Visar Technologies</div>
+  <p>© 2025 · Insight. Integrate. Impact. · Chennai, India</p>
+  <p>Built by Muthu</p>
+</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Hero right animation fix
+  document.querySelector('.hero-right').style.animation = 'fadeUp 0.9s 0.2s ease both';
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const success = document.getElementById('formSuccess');
+    success.style.display = 'block';
+    e.target.reset();
+    setTimeout(() => { success.style.display = 'none'; }, 5000);
+  }
+</script>
+</body>
+</html>
