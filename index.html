@@ -3,1066 +3,763 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muthu — Founder, Trioviz Technologies</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Visar Technologies</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --ink: #0f0e0c;
-    --paper: #f5f0e8;
-    --accent: #c84b2f;
-    --gold: #b8860b;
-    --muted: #6b6560;
-    --border: #d4cfc7;
-    --card: #ffffff;
+    --ink: #0d0d0d;
+    --ivory: #f8f5ef;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --deep: #1a1a2e;
+    --muted: #6b6b6b;
+    --border: rgba(201,168,76,0.25);
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
 
   body {
-    background: var(--paper);
-    color: var(--ink);
     font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
+    background: var(--ivory);
+    color: var(--ink);
     overflow-x: hidden;
-  }
-
-  /* Grain texture overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1000;
-    opacity: 0.4;
   }
 
   /* NAV */
   nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 1.2rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(245, 240, 232, 0.92);
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(248,245,239,0.92);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-
   .nav-logo {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ink);
   }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-  }
-
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-decoration: none;
+    text-decoration: none; font-size: 0.85rem; font-weight: 500;
+    color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase;
     transition: color 0.2s;
   }
-
-  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--ink); color: var(--ivory);
+    border: none; padding: 0.55rem 1.4rem;
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+    cursor: pointer; border-radius: 2px; transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--ink); }
 
   /* HERO */
   .hero {
     min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding-top: 5rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    gap: 4rem;
     position: relative;
     overflow: hidden;
   }
-
-  .hero-left {
-    padding: 6rem 3rem 4rem 4rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    animation: fadeUp 0.9s ease both;
-  }
-
-  .hero-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .hero-tag::before {
+  .hero::before {
     content: '';
-    width: 2rem;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  .hero-name {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3.5rem, 6vw, 5.5rem);
-    line-height: 1.05;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-name span {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .hero-title {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(1.1rem, 2vw, 1.4rem);
-    color: var(--muted);
-    font-style: italic;
-    margin-bottom: 2rem;
-    font-weight: 400;
-  }
-
-  .hero-desc {
-    font-size: 1rem;
-    line-height: 1.75;
-    color: var(--muted);
-    max-width: 420px;
-    margin-bottom: 3rem;
-  }
-
-  .hero-ctas {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-primary {
-    padding: 0.85rem 2rem;
-    background: var(--ink);
-    color: var(--paper);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: all 0.25s;
-    display: inline-block;
-  }
-
-  .btn-primary:hover {
-    background: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
-    padding: 0.85rem 2rem;
-    background: transparent;
-    color: var(--ink);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: 1px solid var(--ink);
-    cursor: pointer;
-    transition: all 0.25s;
-    display: inline-block;
-  }
-
-  .btn-secondary:hover {
-    background: var(--ink);
-    color: var(--paper);
-    transform: translateY(-2px);
-  }
-
-  .hero-right {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeUp 0.9s 0.2s ease both;
-    opacity: 0;
-  }
-
-  .hero-card {
-    background: var(--card);
+    position: absolute; right: -100px; top: 50%;
+    transform: translateY(-50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
     border: 1px solid var(--border);
-    padding: 3rem;
-    max-width: 380px;
-    width: 90%;
-    position: relative;
-    box-shadow: 8px 8px 0 var(--border);
+    pointer-events: none;
   }
-
-  .hero-card::before {
-    content: '"';
-    font-family: 'Playfair Display', serif;
-    font-size: 8rem;
-    color: var(--accent);
-    opacity: 0.12;
-    position: absolute;
-    top: -1rem;
-    left: 1.5rem;
-    line-height: 1;
-  }
-
-  .hero-card p {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.15rem;
-    line-height: 1.7;
-    font-style: italic;
-    color: var(--ink);
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-card-meta {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .hero-stat-row {
-    display: flex;
-    gap: 2rem;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .hero-stat h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  .hero-stat p {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-style: normal;
-    margin: 0;
-  }
-
-  /* DIAGONAL DIVIDER */
-  .divider {
-    width: 100%;
-    height: 60px;
-    background: var(--ink);
-    clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 100%);
-    margin-top: -1px;
-  }
-
-  /* ABOUT */
-  .about {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 6rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-  }
-
-  .about-left h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    line-height: 1.15;
-    margin-bottom: 1.5rem;
-  }
-
-  .about-left h2 em {
-    color: var(--accent);
-    font-style: italic;
-  }
-
-  .about-left p {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: rgba(245,240,232,0.7);
-    margin-bottom: 1rem;
-  }
-
-  .about-right {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .skill-card {
-    border: 1px solid rgba(245,240,232,0.15);
-    padding: 1.5rem;
-    transition: border-color 0.2s;
-  }
-
-  .skill-card:hover {
-    border-color: var(--accent);
-  }
-
-  .skill-card h4 {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.75rem;
-  }
-
-  .skill-card p {
-    font-size: 0.88rem;
-    line-height: 1.6;
-    color: rgba(245,240,232,0.6);
-    margin: 0;
-  }
-
-  /* DIVIDER REVERSE */
-  .divider-reverse {
-    width: 100%;
-    height: 60px;
-    background: var(--ink);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 60%);
-    margin-bottom: -1px;
-  }
-
-  /* Trioviz SECTION */
-  .Trioviz {
-    padding: 6rem 4rem;
-    background: var(--paper);
-  }
-
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .section-label::before {
+  .hero::after {
     content: '';
-    width: 2rem;
-    height: 1px;
-    background: var(--accent);
+    position: absolute; right: 50px; top: 50%;
+    transform: translateY(-50%);
+    width: 380px; height: 380px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .hero-eyebrow-line { width: 40px; height: 1px; background: var(--gold); }
+  .hero-eyebrow span {
+    font-size: 0.78rem; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 900; line-height: 1.05;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero-tagline {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    margin-bottom: 2.5rem; max-width: 480px;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    background: var(--ink); color: var(--ivory);
+    padding: 0.9rem 2rem; border: none; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    font-weight: 500; cursor: pointer; letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--gold); color: var(--ink); }
+  .btn-secondary {
+    background: transparent; color: var(--ink);
+    padding: 0.9rem 2rem; border: 1.5px solid var(--ink); border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
+
+  .hero-right { position: relative; z-index: 1; }
+  .hero-pillars {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .pillar-card {
+    background: white; border: 1px solid var(--border);
+    border-radius: 4px; padding: 1.5rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .pillar-card:hover { transform: translateX(6px); box-shadow: -4px 0 0 var(--gold); }
+  .pillar-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 900; color: var(--gold-light);
+    line-height: 1; min-width: 2rem;
+  }
+  .pillar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem;
+  }
+  .pillar-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* DIVIDER */
+  .section-divider {
+    display: flex; align-items: center; gap: 1.5rem;
+    padding: 0 3rem; margin: 0.5rem 0;
+  }
+  .section-divider-line { flex: 1; height: 1px; background: var(--border); }
+  .section-divider-label {
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500;
   }
 
+  /* STATS */
+  .stats {
+    padding: 4rem 3rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--deep);
+  }
+  .stat {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid rgba(201,168,76,0.15);
+    text-align: center;
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; font-weight: 900; color: var(--gold);
+    display: block; margin-bottom: 0.4rem;
+  }
+  .stat-label {
+    font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(248,245,239,0.6);
+  }
+
+  /* SERVICES */
+  .services {
+    padding: 6rem 3rem;
+  }
+  .section-header { margin-bottom: 3.5rem; }
+  .section-eyebrow {
+    display: flex; align-items: center; gap: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .section-eyebrow-line { width: 30px; height: 1px; background: var(--gold); }
+  .section-eyebrow span {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gold);
+  }
   .section-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.15;
-    margin-bottom: 1rem;
+    font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700;
+    line-height: 1.15; color: var(--ink);
   }
+  .section-title em { font-style: italic; color: var(--gold); }
 
-  .section-title em { color: var(--accent); font-style: italic; }
-
-  .Trioviz-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 2rem;
-    margin-top: 3rem;
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px; background: var(--border);
+    border: 1.5px solid var(--border);
+    border-radius: 4px; overflow: hidden;
   }
-
-  .Trioviz-card {
-    border: 1px solid var(--border);
-    padding: 2rem;
-    background: var(--card);
-    transition: all 0.25s;
-    position: relative;
-    overflow: hidden;
+  .service-card {
+    background: var(--ivory); padding: 2rem 1.8rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
   }
-
-  .Trioviz-card::after {
+  .service-card:hover { background: white; }
+  .service-card::before {
     content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 0; height: 3px;
-    background: var(--accent);
-    transition: width 0.3s;
+    position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px;
+    background: var(--gold);
+    transition: width 0.4s;
   }
-
-  .Trioviz-card:hover::after { width: 100%; }
-  .Trioviz-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
-
-  .Trioviz-icon {
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+  .service-card:hover::before { width: 100%; }
+  .service-icon {
+    font-size: 1.8rem; margin-bottom: 1rem; display: block;
   }
-
-  .Trioviz-card h3 {
+  .service-name {
     font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: 0.6rem;
   }
-
-  .Trioviz-card p {
-    font-size: 0.9rem;
-    line-height: 1.7;
-    color: var(--muted);
+  .service-desc {
+    font-size: 0.83rem; color: var(--muted); line-height: 1.65;
+    margin-bottom: 1.2rem;
+  }
+  .service-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tag {
+    font-size: 0.7rem; padding: 0.25rem 0.65rem;
+    background: var(--deep); color: var(--gold-light);
+    border-radius: 2px; letter-spacing: 0.05em; font-weight: 500;
   }
 
   /* PROJECTS */
   .projects {
-    padding: 6rem 4rem;
-    background: #f9f5ed;
+    padding: 6rem 3rem;
+    background: var(--deep);
   }
-
+  .projects .section-title { color: var(--ivory); }
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
   .project-card {
-    border: 1px solid var(--border);
-    background: var(--card);
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    margin-top: 3rem;
-    transition: box-shadow 0.25s;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 4px; padding: 2rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s, border-color 0.3s;
   }
-
   .project-card:hover {
-    box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+    background: rgba(201,168,76,0.05);
+    border-color: rgba(201,168,76,0.5);
   }
-
-  .project-preview {
-    background: var(--ink);
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 320px;
-  }
-
-  .project-preview-header {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.4);
-  }
-
-  .project-screen {
-    background: rgba(245,240,232,0.05);
-    border: 1px solid rgba(245,240,232,0.1);
+  .project-badge {
+    display: inline-block; font-size: 0.68rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.25rem 0.7rem; margin-bottom: 1rem;
     border-radius: 2px;
-    padding: 1.2rem;
-    margin: 1rem 0;
   }
-
-  .screen-bar {
-    display: flex;
-    gap: 0.4rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .screen-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: rgba(245,240,232,0.2);
-  }
-
-  .screen-line {
-    height: 6px;
-    background: rgba(245,240,232,0.08);
-    border-radius: 2px;
-    margin-bottom: 0.4rem;
-  }
-
-  .screen-line.accent { background: rgba(200,75,47,0.4); width: 60%; }
-  .screen-line.short { width: 40%; }
-  .screen-line.med { width: 75%; }
-
-  .project-live-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #4ade80;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .project-live-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #4ade80;
-    animation: pulse 2s infinite;
-  }
-
-  .project-info {
-    padding: 2.5rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .project-type {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1rem;
-  }
-
-  .project-info h3 {
+  .badge-web { background: rgba(201,168,76,0.15); color: var(--gold); }
+  .badge-mobile { background: rgba(94,130,232,0.15); color: #8aaeff; }
+  .badge-erp { background: rgba(72,199,140,0.15); color: #72d9a0; }
+  .badge-saas { background: rgba(232,94,163,0.15); color: #f09ad1; }
+  .project-name {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
-    line-height: 1.2;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--ivory); margin-bottom: 0.6rem;
   }
-
-  .project-info p {
-    font-size: 0.92rem;
-    line-height: 1.75;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
+  .project-desc {
+    font-size: 0.85rem; line-height: 1.65;
+    color: rgba(248,245,239,0.55); margin-bottom: 1.5rem;
   }
-
-  .project-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .stack-pill {
+    font-size: 0.68rem; padding: 0.2rem 0.6rem;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 2px; color: rgba(248,245,239,0.6);
+    letter-spacing: 0.04em;
   }
-
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.75rem;
-    border: 1px solid var(--border);
-    color: var(--muted);
+  .project-card-featured {
+    grid-column: span 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
   }
-
-  /* GOALS */
-  .goals {
-    padding: 6rem 4rem;
-    background: var(--paper);
-  }
-
-  .goals-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 3rem;
-  }
-
-  .goal-card {
-    border: 1px solid var(--border);
-    padding: 2.5rem;
-    background: var(--card);
-    position: relative;
-  }
-
-  .goal-year {
-    font-family: 'Playfair Display', serif;
+  .project-featured-visual {
+    background: linear-gradient(135deg, rgba(201,168,76,0.1) 0%, rgba(26,26,46,0.5) 100%);
+    border-radius: 4px; min-height: 180px;
+    display: flex; align-items: center; justify-content: center;
     font-size: 4rem;
-    color: var(--accent);
-    opacity: 0.12;
-    position: absolute;
-    top: 1rem;
-    right: 1.5rem;
-    font-weight: 700;
-    line-height: 1;
   }
 
-  .goal-card h3 {
+  /* TECH STACK */
+  .tech-stack { padding: 6rem 3rem; }
+  .stack-categories {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+  }
+  .stack-cat { }
+  .stack-cat-title {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500; margin-bottom: 1rem;
+    padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
+  }
+  .stack-items { display: flex; flex-direction: column; gap: 0.5rem; }
+  .stack-item {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 3px; background: white;
+    font-size: 0.83rem; font-weight: 500;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .stack-item:hover { border-color: var(--gold); background: #fffdf7; }
+  .stack-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+  /* PROCESS */
+  .process {
+    padding: 6rem 3rem;
+    background: white;
+  }
+  .process-steps {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 0; position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute; top: 2rem; left: 10%; right: 10%;
+    height: 1px; background: var(--border);
+  }
+  .process-step { text-align: center; padding: 0 1rem; }
+  .process-num {
+    width: 4rem; height: 4rem; border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--ivory);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem;
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
+    font-size: 1.1rem; font-weight: 700; color: var(--gold);
+    position: relative; z-index: 1;
+    transition: background 0.3s, border-color 0.3s;
   }
-
-  .goal-items {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  .process-step:hover .process-num { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .process-step-title {
+    font-weight: 600; font-size: 0.88rem; margin-bottom: 0.4rem;
   }
+  .process-step-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
 
-  .goal-items li {
-    font-size: 0.92rem;
-    color: var(--muted);
-    line-height: 1.6;
-    padding-left: 1.2rem;
+  /* CTA */
+  .cta-section {
+    padding: 8rem 3rem;
+    text-align: center;
+    background: var(--deep);
+    position: relative; overflow: hidden;
+  }
+  .cta-section::before {
+    content: 'V';
+    position: absolute; top: -2rem; left: 50%; transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 28rem; font-weight: 900; color: rgba(201,168,76,0.03);
+    pointer-events: none; line-height: 1;
+  }
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 900;
+    color: var(--ivory); margin-bottom: 1.2rem;
     position: relative;
   }
-
-  .goal-items li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 0.8rem;
+  .cta-section h2 em { color: var(--gold); font-style: italic; }
+  .cta-section p {
+    font-size: 1rem; color: rgba(248,245,239,0.6);
+    margin-bottom: 2.5rem; position: relative;
   }
-
-  /* CONTACT */
-  .contact {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 6rem 4rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: start;
+  .cta-actions { display: flex; gap: 1rem; justify-content: center; position: relative; }
+  .btn-gold {
+    background: var(--gold); color: var(--ink);
+    padding: 1rem 2.5rem; border: none; border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; letter-spacing: 0.04em;
+    transition: opacity 0.2s;
   }
-
-  .contact-left h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.15;
-    margin-bottom: 1.5rem;
+  .btn-gold:hover { opacity: 0.85; }
+  .btn-outline-ivory {
+    background: transparent; color: var(--ivory);
+    padding: 1rem 2.5rem; border: 1.5px solid rgba(248,245,239,0.3); border-radius: 2px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 500; cursor: pointer; transition: border-color 0.2s;
   }
-
-  .contact-left h2 em { color: var(--accent); font-style: italic; }
-
-  .contact-left p {
-    font-size: 1rem;
-    line-height: 1.8;
-    color: rgba(245,240,232,0.6);
-    margin-bottom: 2rem;
-  }
-
-  .contact-detail {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .contact-detail-icon {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    min-width: 60px;
-  }
-
-  .contact-detail span {
-    font-size: 0.9rem;
-    color: rgba(245,240,232,0.7);
-  }
-
-  .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .form-group label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(245,240,232,0.4);
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    background: rgba(245,240,232,0.05);
-    border: 1px solid rgba(245,240,232,0.15);
-    color: var(--paper);
-    padding: 0.85rem 1rem;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s;
-    width: 100%;
-  }
-
-  .form-group select option {
-    background: var(--ink);
-    color: var(--paper);
-  }
-
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus {
-    border-color: var(--accent);
-  }
-
-  .form-group textarea {
-    resize: vertical;
-    min-height: 120px;
-  }
-
-  .form-success {
-    display: none;
-    padding: 1rem;
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.3);
-    color: #4ade80;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-align: center;
-  }
+  .btn-outline-ivory:hover { border-color: var(--gold); color: var(--gold); }
 
   /* FOOTER */
   footer {
-    background: #080807;
-    color: rgba(245,240,232,0.3);
-    padding: 2rem 4rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 2rem 3rem;
+    display: flex; align-items: center; justify-content: space-between;
+    border-top: 1px solid var(--border);
+    background: var(--deep);
   }
-
-  footer p {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-  }
-
-  .footer-brand {
+  .footer-logo {
     font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--accent);
-    font-style: italic;
+    font-size: 1rem; color: rgba(248,245,239,0.6);
+  }
+  .footer-logo span { color: var(--gold); }
+  .footer-tagline {
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(248,245,239,0.3);
+  }
+  .footer-contact {
+    font-size: 0.82rem; color: rgba(248,245,239,0.5);
   }
 
-  /* ANIMATIONS */
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
+    from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+  .hero-content > * {
+    animation: fadeUp 0.6s ease both;
   }
-
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; min-height: auto; }
-    .hero-left { padding: 6rem 1.5rem 2rem; }
-    .hero-right { padding: 2rem 1.5rem 4rem; }
-    .about, .contact { grid-template-columns: 1fr; padding: 4rem 1.5rem; }
-    .Trioviz { padding: 4rem 1.5rem; }
-    .Trioviz-grid { grid-template-columns: 1fr; }
-    .projects { padding: 4rem 1.5rem; }
-    .project-card { grid-template-columns: 1fr; }
-    .goals { padding: 4rem 1.5rem; }
-    .goals-grid { grid-template-columns: 1fr; }
-    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-  }
+  .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .hero-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .hero-content > *:nth-child(4) { animation-delay: 0.4s; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">Trioviz Technologies</div>
+  <div class="nav-logo">Visar<span>.</span>Technologies</div>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#Trioviz">Services</a></li>
-    <li><a href="#projects">Work</a></li>
-    <li><a href="#goals">Vision</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Projects</a></li>
+    <li><a href="#">Stack</a></li>
+    <li><a href="#">Process</a></li>
   </ul>
+  <button class="nav-cta">Start a Project</button>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-left">
-    <div class="hero-tag">Available for Projects & Leadership Roles</div>
-    <h1 class="hero-name">Muthu<span>.</span></h1>
-    <p class="hero-title">Founder, Trioviz Technologies · Engineering Leader</p>
-    <p class="hero-desc">
-      I build software that solves real business problems — not just code that works, but systems that grow with you. 10 years turning complex requirements into clean, reliable applications.
-    </p>
-    <div class="hero-ctas">
-      <a href="#contact" class="btn-primary">Start a Conversation</a>
-      <a href="#projects" class="btn-secondary">See My Work</a>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span>Engineering Excellence · India</span>
+    </div>
+    <h1>Insight.<br><em>Innovate.</em><br>Impact.</h1>
+    <p class="hero-tagline">We design and build custom web, mobile, and enterprise applications that solve real business problems — with precision, speed, and craftsmanship.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">View Our Work</button>
+      <button class="btn-secondary">Let's Talk</button>
     </div>
   </div>
 
   <div class="hero-right">
-    <div class="hero-card">
-      <p>Insight drives every decision. Integration connects every layer. Impact is the only measure that matters.</p>
-      <div class="hero-card-meta">Trioviz Technologies · Chennai, India</div>
-      <div class="hero-stat-row">
-        <div class="hero-stat">
-          <h3>10+</h3>
-          <p>Years Building</p>
+    <div class="hero-pillars">
+      <div class="pillar-card">
+        <div class="pillar-num">01</div>
+        <div>
+          <div class="pillar-title">Deep Insight</div>
+          <div class="pillar-desc">We study your domain, users, and goals before writing a single line of code.</div>
         </div>
-        <div class="hero-stat">
-          <h3>PHP · Java · React</h3>
-          <p>Core Stack</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">02</div>
+        <div>
+          <div class="pillar-title">Smart Innovation</div>
+          <div class="pillar-desc">Right technology, right architecture — modern stacks that actually scale.</div>
+        </div>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">03</div>
+        <div>
+          <div class="pillar-title">Measurable Impact</div>
+          <div class="pillar-desc">Software that moves your business forward — not just software that ships.</div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DIVIDER -->
-<div class="divider"></div>
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-num">10+</span>
+    <span class="stat-label">Years of Expertise</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">50+</span>
+    <span class="stat-label">Projects Delivered</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">7</span>
+    <span class="stat-label">Technology Stacks</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">100%</span>
+    <span class="stat-label">Client Satisfaction</span>
+  </div>
+</div>
 
-<!-- ABOUT -->
-<section class="about" id="about">
-  <div class="about-left fade-in">
-    <h2>Engineering with <em>purpose.</em> Building with intention.</h2>
-    <p>
-      I'm Muthu, a Lead Software Engineer based in Chennai with a decade of experience building web and mobile applications across PHP, Java, React, and MySQL — with growing work in AI integration.
-    </p>
-    <p>
-      I founded Trioviz Technologies to serve businesses that are too ambitious for templates but not ready for enterprise-scale IT teams. The sweet spot where real technology meets real people.
-    </p>
-    <p>
-      Beyond code, I lead communities — managing a weekly self-development group where I've learned that the best engineering is a lot like the best leadership: listen first, build second.
-    </p>
+<!-- SERVICES -->
+<section class="services">
+  <div class="section-header">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>What We Build</span>
+    </div>
+    <h2 class="section-title">Crafted for <em>every</em> platform</h2>
   </div>
 
-  <div class="about-right fade-in">
-    <div class="skill-card">
-      <h4>Web Apps</h4>
-      <p>Full-stack custom applications built to solve your specific business problem — not adapted templates.</p>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">📱</span>
+      <div class="service-name">Flutter Mobile Apps</div>
+      <div class="service-desc">Cross-platform mobile apps for iOS and Android — single codebase, native performance, beautiful UI.</div>
+      <div class="service-tags">
+        <span class="tag">Flutter</span>
+        <span class="tag">Dart</span>
+        <span class="tag">iOS</span>
+        <span class="tag">Android</span>
+      </div>
     </div>
-    <div class="skill-card">
-      <h4>Mobile</h4>
-      <p>Cross-platform mobile experiences that work where your customers are, seamlessly.</p>
+    <div class="service-card">
+      <span class="service-icon">⚛️</span>
+      <div class="service-name">React Web Applications</div>
+      <div class="service-desc">Dynamic, high-performance web apps with modern React — SPAs, dashboards, and real-time interfaces.</div>
+      <div class="service-tags">
+        <span class="tag">React</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Redux</span>
+      </div>
     </div>
-    <div class="skill-card">
-      <h4>Leadership</h4>
-      <p>Engineering team leadership, architecture decisions, and technical strategy for growing startups.</p>
+    <div class="service-card">
+      <span class="service-icon">🔺</span>
+      <div class="service-name">Next.js Full-Stack</div>
+      <div class="service-desc">Server-side rendered, SEO-optimised web apps with Next.js — fast, scalable, production-ready.</div>
+      <div class="service-tags">
+        <span class="tag">Next.js</span>
+        <span class="tag">Vercel</span>
+        <span class="tag">SSR</span>
+      </div>
     </div>
-    <div class="skill-card">
-      <h4>AI Integration</h4>
-      <p>Practical AI features woven into existing products — not gimmicks, but genuine capability uplift.</p>
+    <div class="service-card">
+      <span class="service-icon">🐘</span>
+      <div class="service-name">Laravel Backend APIs</div>
+      <div class="service-desc">Robust, secure PHP backends with Laravel — REST APIs, admin panels, and complex business logic.</div>
+      <div class="service-tags">
+        <span class="tag">Laravel</span>
+        <span class="tag">PHP</span>
+        <span class="tag">MySQL</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">☕</span>
+      <div class="service-name">Spring Boot Enterprise</div>
+      <div class="service-desc">Enterprise-grade Java backends with Spring Boot — microservices, high-volume APIs, and integrations.</div>
+      <div class="service-tags">
+        <span class="tag">Spring Boot</span>
+        <span class="tag">Java</span>
+        <span class="tag">REST</span>
+      </div>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🌐</span>
+      <div class="service-name">WordPress & Odoo</div>
+      <div class="service-desc">Business websites on WordPress and ERP/CRM implementations on Odoo — customised for your workflow.</div>
+      <div class="service-tags">
+        <span class="tag">WordPress</span>
+        <span class="tag">Odoo</span>
+        <span class="tag">ERP</span>
+        <span class="tag">CRM</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- DIVIDER REVERSE -->
-<div class="divider-reverse"></div>
-
-<!-- Trioviz SECTION -->
-<section class="Trioviz" id="Trioviz">
-  <div class="section-label">Trioviz Technologies</div>
-  <h2 class="section-title fade-in">Insight. Integrate. <em>Impact.</em></h2>
-  <p style="color: var(--muted); max-width: 520px; line-height: 1.75; font-size: 0.95rem;" class="fade-in">
-    We build custom web applications for small and mid-sized businesses ready to move beyond spreadsheets, WhatsApp orders, and manual processes — without the cost of a corporate IT team.
-  </p>
-
-  <div class="Trioviz-grid">
-    <div class="Trioviz-card fade-in">
-      <div class="Trioviz-icon">🧩</div>
-      <h3>Custom Web Applications</h3>
-      <p>Billing systems, inventory management, booking platforms, CRMs — built precisely for how your business actually works.</p>
-    </div>
-    <div class="Trioviz-card fade-in">
-      <div class="Trioviz-icon">📱</div>
-      <h3>Business Portals & Dashboards</h3>
-      <p>Real-time visibility into your operations. Make decisions with data, not guesswork. Accessible from any device.</p>
-    </div>
-    <div class="Trioviz-card fade-in">
-      <div class="Trioviz-icon">🔗</div>
-      <h3>Integration & Automation</h3>
-      <p>Connect your existing tools. Eliminate repetitive manual work. Let your team focus on what actually matters.</p>
-    </div>
-  </div>
-</section>
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <div class="section-divider-label">Featured Work</div>
+  <div class="section-divider-line"></div>
+</div>
 
 <!-- PROJECTS -->
-<section class="projects" id="projects">
-  <div class="section-label">Featured Work</div>
-  <h2 class="section-title fade-in">Built. <em>Deployed. Real.</em></h2>
+<section class="projects">
+  <div class="section-header" style="margin-bottom:2.5rem;">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line" style="background:rgba(201,168,76,0.5);"></div>
+      <span>Selected Projects</span>
+    </div>
+    <h2 class="section-title">Built with purpose,<br><em>delivered with precision</em></h2>
+  </div>
 
-  <div class="project-card fade-in">
-    <div class="project-preview">
-      <div class="project-preview-header">Live Product · Deployed on Vercel</div>
-      <div class="project-screen">
-        <div class="screen-bar">
-          <div class="screen-dot"></div>
-          <div class="screen-dot"></div>
-          <div class="screen-dot"></div>
+  <div class="projects-grid">
+    <div class="project-card project-card-featured">
+      <div style="display:flex; flex-direction:column; justify-content:center;">
+        <span class="project-badge badge-saas">SaaS Platform</span>
+        <div class="project-name">Clinic Management System</div>
+        <div class="project-desc">End-to-end clinic management with patient records, appointment scheduling, billing, and doctor dashboards — built for a multi-branch medical group.</div>
+        <div class="project-stack">
+          <span class="stack-pill">React</span>
+          <span class="stack-pill">Laravel</span>
+          <span class="stack-pill">MySQL</span>
+          <span class="stack-pill">Flutter</span>
         </div>
-        <div class="screen-line accent"></div>
-        <div class="screen-line med"></div>
-        <div class="screen-line short"></div>
-        <div class="screen-line med"></div>
-        <div class="screen-line short"></div>
-        <div class="screen-line accent" style="width:45%"></div>
       </div>
-      <div class="project-live-tag">Live & Accessible</div>
+      <div class="project-featured-visual">🏥</div>
     </div>
 
-    <div class="project-info">
-      <div class="project-type">Point of Sale System</div>
-      <h3>VogueManager POS</h3>
-      <p>
-        A complete retail point-of-sale system built for Indian small businesses. Includes real-time billing with GST calculation, inventory management with restock alerts, sales history, invoice printing, and a live dashboard — all in one clean interface.
-      </p>
-      <div class="project-tags">
-        <span class="tag">Billing & GST</span>
-        <span class="tag">Inventory</span>
-        <span class="tag">Sales Analytics</span>
-        <span class="tag">Invoice Print</span>
-        <span class="tag">React</span>
+    <div class="project-card">
+      <span class="project-badge badge-erp">ERP</span>
+      <div class="project-name">Odoo ERP Customisation</div>
+      <div class="project-desc">Custom Odoo modules for a trading company — inventory, sales pipelines, and automated invoicing workflows.</div>
+      <div class="project-stack">
+        <span class="stack-pill">Odoo</span>
+        <span class="stack-pill">Python</span>
+        <span class="stack-pill">PostgreSQL</span>
       </div>
-      <a href="https://vogue-lilac.vercel.app/" target="_blank" class="btn-primary" style="align-self: flex-start;">View Live Demo →</a>
+    </div>
+
+    <div class="project-card">
+      <span class="project-badge badge-mobile">Mobile App</span>
+      <div class="project-name">Field Service App</div>
+      <div class="project-desc">Flutter app for field technicians — offline-first job tracking, photo uploads, and real-time sync with the backend.</div>
+      <div class="project-stack">
+        <span class="stack-pill">Flutter</span>
+        <span class="stack-pill">Spring Boot</span>
+        <span class="stack-pill">Firebase</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-badge badge-web">Web Platform</span>
+      <div class="project-name">B2B E-Commerce Portal</div>
+      <div class="project-desc">Next.js storefront with dynamic pricing, bulk ordering, and a React admin panel — serving 200+ business buyers.</div>
+      <div class="project-stack">
+        <span class="stack-pill">Next.js</span>
+        <span class="stack-pill">Laravel</span>
+        <span class="stack-pill">Stripe</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <span class="project-badge badge-web">WordPress</span>
+      <div class="project-name">Coaching Centre Website</div>
+      <div class="project-desc">Fast, SEO-optimised WordPress site with online course listings, inquiry forms, and integrated WhatsApp lead capture.</div>
+      <div class="project-stack">
+        <span class="stack-pill">WordPress</span>
+        <span class="stack-pill">WooCommerce</span>
+        <span class="stack-pill">SEO</span>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- GOALS -->
-<section class="goals" id="goals">
-  <div class="section-label">The Road Ahead</div>
-  <h2 class="section-title fade-in">Where <em>Trioviz</em> is going.</h2>
-
-  <div class="goals-grid">
-    <div class="goal-card fade-in">
-      <div class="goal-year">1yr</div>
-      <h3>Year One — Foundation</h3>
-      <ul class="goal-items">
-        <li>3 to 5 paying clients from warm network and referrals</li>
-        <li>Establish Trioviz as a trusted boutique tech partner in Chennai</li>
-        <li>Build a repeatable delivery process for custom web apps</li>
-        <li>Launch first SaaS product concept based on client patterns</li>
-      </ul>
+<!-- TECH STACK -->
+<section class="tech-stack">
+  <div class="section-header">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>Technology Stack</span>
     </div>
-    <div class="goal-card fade-in">
-      <div class="goal-year">5yr</div>
-      <h3>Year Five — Scale</h3>
-      <ul class="goal-items">
-        <li>Recognised boutique software firm with a small, expert team</li>
-        <li>At least one live SaaS product with recurring revenue</li>
-        <li>Serve 20+ businesses across retail, healthcare, and education</li>
-        <li>A firm known for genuine impact, not just deliverables</li>
-      </ul>
+    <h2 class="section-title">Tools we <em>master</em></h2>
+  </div>
+
+  <div class="stack-categories">
+    <div class="stack-cat">
+      <div class="stack-cat-title">Frontend & Mobile</div>
+      <div class="stack-items">
+        <div class="stack-item"><div class="stack-dot" style="background:#61DAFB;"></div>React</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#000000;"></div>Next.js</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#54C5F8;"></div>Flutter</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#F7DF1E;"></div>JavaScript</div>
+      </div>
+    </div>
+    <div class="stack-cat">
+      <div class="stack-cat-title">Backend</div>
+      <div class="stack-items">
+        <div class="stack-item"><div class="stack-dot" style="background:#FF2D20;"></div>Laravel</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#6DB33F;"></div>Spring Boot</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#777BB4;"></div>PHP</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#ED8B00;"></div>Java</div>
+      </div>
+    </div>
+    <div class="stack-cat">
+      <div class="stack-cat-title">CMS & ERP</div>
+      <div class="stack-items">
+        <div class="stack-item"><div class="stack-dot" style="background:#21759B;"></div>WordPress</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#714B67;"></div>Odoo</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#999;"></div>WooCommerce</div>
+      </div>
+    </div>
+    <div class="stack-cat">
+      <div class="stack-cat-title">Data & DevOps</div>
+      <div class="stack-items">
+        <div class="stack-item"><div class="stack-dot" style="background:#4479A1;"></div>MySQL</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#336791;"></div>PostgreSQL</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#FFCA28;"></div>Firebase</div>
+        <div class="stack-item"><div class="stack-dot" style="background:#2496ED;"></div>Docker</div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CONTACT -->
-<div class="divider"></div>
-<section class="contact" id="contact">
-  <div class="contact-left fade-in">
-    <h2>Let's build something <em>meaningful.</em></h2>
-    <p>
-      Whether you're a business ready to digitise your operations, or a startup looking for an engineering leader — I'd love to hear what you're working on.
-    </p>
-    <div class="contact-detail">
-      <span class="contact-detail-icon">Location</span>
-      <span>Chennai, India</span>
+<!-- PROCESS -->
+<section class="process">
+  <div class="section-header" style="margin-bottom:4rem;">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <span>How We Work</span>
     </div>
-    <div class="contact-detail">
-      <span class="contact-detail-icon">Open to</span>
-      <span>Custom Projects · EM / Head of Eng Roles</span>
-    </div>
-    <div class="contact-detail">
-      <span class="contact-detail-icon">Company</span>
-      <span>Trioviz Technologies</span>
-    </div>
+    <h2 class="section-title">Our <em>proven</em> process</h2>
   </div>
 
-  <div class="fade-in">
-    <form class="contact-form" onsubmit="handleSubmit(event)">
-      <div class="form-group">
-        <label>Your Name</label>
-        <input type="text" placeholder="How should I address you?" required />
-      </div>
-      <div class="form-group">
-        <label>Email Address</label>
-        <input type="email" placeholder="your@email.com" required />
-      </div>
-      <div class="form-group">
-        <label>I'm reaching out about</label>
-        <select required>
-          <option value="" disabled selected>Select a purpose</option>
-          <option>A custom software project</option>
-          <option>Engineering leadership role</option>
-          <option>Partnership or collaboration</option>
-          <option>General enquiry</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Tell me more</label>
-        <textarea placeholder="Describe what you're building or looking for..." required></textarea>
-      </div>
-      <button type="submit" class="btn-primary">Send Message →</button>
-      <div class="form-success" id="formSuccess">✓ Message received. I'll be in touch shortly.</div>
-    </form>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="process-num">01</div>
+      <div class="process-step-title">Discovery</div>
+      <div class="process-step-desc">Understand your goals, users, and constraints deeply.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">02</div>
+      <div class="process-step-title">Architecture</div>
+      <div class="process-step-desc">Design the right system — scalable, secure, maintainable.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">03</div>
+      <div class="process-step-title">Build</div>
+      <div class="process-step-desc">Iterative development with regular demos and feedback.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">04</div>
+      <div class="process-step-title">Launch</div>
+      <div class="process-step-desc">Smooth deployment, testing, and go-live support.</div>
+    </div>
+    <div class="process-step">
+      <div class="process-num">05</div>
+      <div class="process-step-title">Support</div>
+      <div class="process-step-desc">Ongoing maintenance and feature expansion as you grow.</div>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Ready to build something <em>meaningful?</em></h2>
+  <p>From a landing page to a full enterprise platform — let's start with a conversation.</p>
+  <div class="cta-actions">
+    <button class="btn-gold">Start Your Project</button>
+    <button class="btn-outline-ivory">View Case Studies</button>
+  </div>
+</section>
+
 <footer>
-  <div class="footer-brand">Trioviz Technologies</div>
-  <p>© 2025 · Insight. Integrate. Impact. · Chennai, India</p>
-  <p>Built by Muthu</p>
+  <div class="footer-logo">Visar<span>.</span>Technologies</div>
+  <div class="footer-tagline">Insight · Innovate · Impact</div>
+  <div class="footer-contact">visartechnologies@gmail.com</div>
 </footer>
 
-<script>
-  // Scroll animations
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-  // Hero right animation fix
-  document.querySelector('.hero-right').style.animation = 'fadeUp 0.9s 0.2s ease both';
-
-  // Form submit
-  function handleSubmit(e) {
-    e.preventDefault();
-    const success = document.getElementById('formSuccess');
-    success.style.display = 'block';
-    e.target.reset();
-    setTimeout(() => { success.style.display = 'none'; }, 5000);
-  }
-</script>
 </body>
 </html>
