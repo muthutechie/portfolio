@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Desk</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo-section">
+        <div class="logo-icon">MD</div>
+        <div class="logo-text">Mission Desk</div>
+      </div>
+      <!-- Mobile menu trigger shown inside header on mobile -->
+      <div class="mobile-menu-trigger" onclick="App.toggleMobileMenu()">
+        <i data-lucide="menu"></i>
+      </div>
+
+      <!-- Smart Views -->
+      <div class="nav-group">
+        <span class="nav-label">Focus</span>
+        <div class="nav-item" data-view="dashboard" id="nav-dashboard">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="nav-item active" data-view="today" id="nav-today">
+          <i data-lucide="sun"></i>
+          <span>Today</span>
+          <span class="nav-item-count" id="count-today">0</span>
+        </div>
+        <div class="nav-item" data-view="tomorrow" id="nav-tomorrow">
+          <i data-lucide="calendar-days"></i>
+          <span>Tomorrow</span>
+          <span class="nav-item-count" id="count-tomorrow">0</span>
+        </div>
+        <div class="nav-item" data-view="calendar" id="nav-calendar">
+          <i data-lucide="calendar"></i>
+          <span>Calendar</span>
+        </div>
+        <div class="nav-item" data-view="someday" id="nav-someday">
+          <i data-lucide="archive"></i>
+          <span>Someday</span>
+          <span class="nav-item-count" id="count-someday">0</span>
+        </div>
+        <div class="nav-item" data-view="completed" id="nav-completed">
+          <i data-lucide="check-circle-2"></i>
+          <span>Completed</span>
+        </div>
+      </div>
+
+      <!-- Projects & Lists -->
+      <div class="nav-group" style="display: flex; flex-direction: column; flex: 1;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-right: 8px;">
+          <span class="nav-label" style="margin-bottom: 0;">Projects & Lists</span>
+          <i data-lucide="plus" class="icon-btn" style="width: 14px; height: 14px; padding: 0;"
+            onclick="openAddProjectModal()"></i>
+        </div>
+        <div class="project-list-container" id="sidebar-projects-list">
+          <!-- Dynamic Project Lists -->
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="icon-btn" id="theme-toggle-btn" title="Toggle Light/Dark Mode" onclick="App.toggleTheme()">
+          <i data-lucide="moon" id="theme-icon"></i>
+        </div>
+        <div class="icon-btn" title="Firestore Connection Settings" onclick="openSettingsModal()">
+          <i data-lucide="settings"></i>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN INTERFACE -->
+    <main class="main-content">
+
+      <!-- HEADER -->
+      <header class="main-header">
+        <div class="header-info">
+          <h1 id="view-title">Today's Focus</h1>
+          <p id="view-subtitle">Consistency is identity.</p>
+        </div>
+        <div class="header-actions">
+          <div class="sync-badge syncing" id="sync-status-badge">connecting…</div>
+        </div>
+      </header>
+
+      <!-- VIEWS PANEL -->
+      <div class="views-container">
+
+        <!-- ==========================================
+             1. DASHBOARD VIEW
+             ========================================== -->
+        <section class="view-panel" id="view-dashboard">
+          <div class="dashboard-grid">
+            <div class="dash-card">
+              <span class="dash-card-title">Completed Tasks</span>
+              <div class="dash-stat" id="dash-completed-count">0</div>
+              <span class="header-info" style="font-size: 11px; color: var(--text-muted);" id="dash-completed-sub">in
+                the last 30 days</span>
+            </div>
+            <div class="dash-card">
+              <span class="dash-card-title">Weekly Productivity Trend</span>
+              <div class="dash-chart-container" id="dash-trend-chart">
+                <!-- Bar columns generated dynamically -->
+              </div>
+            </div>
+            <div class="dash-card">
+              <span class="dash-card-title">Up Next (Priority P1/P2)</span>
+              <div class="up-next-list" id="dash-up-next">
+                <!-- Dynamic High priority tasks -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Streak Tracker directly in Dashboard -->
+          <div class="streak-container">
+            <div class="streak-header">
+              <span class="streak-title">Daily Discipline Streak (30 Days)</span>
+              <span class="streak-title" id="dash-streak-metric" style="color: var(--accent);">0 Days Consecutive</span>
+            </div>
+            <div class="streak-grid" id="dash-streak-dots">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             2. TODAY VIEW
+             ========================================== -->
+        <section class="view-panel active" id="view-today">
+          <div class="today-split">
+
+            <!-- Left Side: Routine Schedule -->
+            <div class="today-routine-column">
+              <div class="today-section-title">
+                <span>Daily Discipline</span>
+                <i data-lucide="edit-3" class="icon-btn" style="width: 16px; height: 16px;" title="Edit Daily Schedule"
+                  onclick="RoutineManager.openRoutineEditor()"></i>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="routine-progress-container">
+                <div class="routine-progress-label">
+                  <span>Today's Routine Completed</span>
+                  <span id="today-routine-text">0 / 0</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="today-routine-progress"></div>
+                </div>
+              </div>
+
+              <!-- Routine Checklist -->
+              <div class="routine-list" id="today-routines-checklist">
+                <!-- Loaded dynamically -->
+              </div>
+
+              <button class="btn btn-muted" style="width: 100%; margin-top: 16px;"
+                onclick="RoutineManager.resetTodayCompletions()">
+                ↺ Reset Today's Blocks
+              </button>
+            </div>
+
+            <!-- Right Side: Today's Tasks -->
+            <div class="today-tasks-column">
+              <div class="today-section-title">Today's Tasks</div>
+
+              <div class="task-list-wrapper">
+                <div class="quick-add-task">
+                  <i data-lucide="plus" style="width: 16px; color: var(--text-muted);"></i>
+                  <input type="text" class="quick-add-input" id="today-task-input"
+                    placeholder="Add a task to Today... Press Enter"
+                    onkeydown="TaskManager.handleQuickAdd(event, 'today')">
+                </div>
+                <div class="task-list" id="today-tasks-list" data-date="today">
+                  <!-- Loaded dynamically -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Preserved 30-Day Streak dot display -->
+          <div class="streak-container">
+            <div class="streak-header">
+              <span class="streak-title">30-Day Completion Log</span>
+              <span class="streak-title" id="today-streak-text" style="color: var(--accent);">0 Days Completed</span>
+            </div>
+            <div class="streak-grid" id="today-streak-dots">
+              <!-- Streak dot logs rendered here -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             3. TOMORROW VIEW
+             ========================================== -->
+        <section class="view-panel" id="view-tomorrow">
+          <div class="task-list-wrapper">
+            <div class="quick-add-task">
+              <i data-lucide="plus" style="width: 16px; color: var(--text-muted);"></i>
+              <input type="text" class="quick-add-input" id="tomorrow-task-input"
+                placeholder="Add a task to Tomorrow... Press Enter"
+                onkeydown="TaskManager.handleQuickAdd(event, 'tomorrow')">
+            </div>
+            <div class="task-list" id="tomorrow-tasks-list" data-date="tomorrow">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             4. UPCOMING / CALENDAR VIEW
+             ========================================== -->
+        <section class="view-panel" id="view-calendar">
+          <div class="calendar-controls">
+            <h2 id="calendar-month-year-label" style="font-size: 16px; font-weight: 700;">August 2026</h2>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div class="icon-btn" onclick="Calendar.navigate(-1)"><i data-lucide="chevron-left"></i></div>
+              <div class="icon-btn" onclick="Calendar.navigate(1)"><i data-lucide="chevron-right"></i></div>
+              <div class="calendar-btn-group">
+                <div class="calendar-tab-btn active" id="cal-tab-month" onclick="Calendar.switchView('month')">Month
+                </div>
+                <div class="calendar-tab-btn" id="cal-tab-week" onclick="Calendar.switchView('week')">Week</div>
+                <div class="calendar-tab-btn" id="cal-tab-day" onclick="Calendar.switchView('day')">Day</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Month View Container -->
+          <div id="calendar-month-view" class="calendar-month-grid">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Week View Container -->
+          <div id="calendar-week-view" class="calendar-week-grid" style="display: none;">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <!-- Day View Container (Timeline / Time blocking) -->
+          <div id="calendar-day-view" class="day-timeline" style="display: none;">
+            <!-- Rendered dynamically -->
+          </div>
+        </section>
+
+        <!-- ==========================================
+             5. SOMEDAY VIEW
+             ========================================== -->
+        <section class="view-panel" id="view-someday">
+          <div class="task-list-wrapper">
+            <div class="quick-add-task">
+              <i data-lucide="plus" style="width: 16px; color: var(--text-muted);"></i>
+              <input type="text" class="quick-add-input" id="someday-task-input"
+                placeholder="Add a backlog task... Press Enter"
+                onkeydown="TaskManager.handleQuickAdd(event, 'someday')">
+            </div>
+            <div class="task-list" id="someday-tasks-list" data-date="someday">
+              <!-- Loaded dynamically -->
+            </div>
+          </div>
+        </section>
+
+        <!-- ==========================================
+             6. COMPLETED VIEW
+             ========================================== -->
+        <section class="view-panel" id="view-completed">
+          <div class="task-list" id="completed-tasks-list">
+            <!-- Loaded dynamically -->
+          </div>
+        </section>
+
+        <!-- ==========================================
+             7. CUSTOM PROJECT VIEW
+             ========================================== -->
+        <section class="view-panel" id="view-project">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <div class="calendar-btn-group" id="project-layout-toggle">
+              <!-- Project sections toggle: List view or Kanban board view -->
+              <div class="calendar-tab-btn active" id="proj-tab-list" onclick="TaskManager.switchProjectLayout('list')">
+                List</div>
+              <div class="calendar-tab-btn" id="proj-tab-kanban" onclick="TaskManager.switchProjectLayout('kanban')">
+                Board</div>
+            </div>
+            <button class="btn btn-muted" style="display: flex; align-items: center; gap: 8px; font-size: 11px;"
+              onclick="TaskManager.addNewSectionToProject()">
+              <i data-lucide="plus" style="width: 12px; height: 12px;"></i> Add Section
+            </button>
+          </div>
+
+          <!-- Container for project lists or Kanban boards -->
+          <div id="project-sections-main-container">
+            <!-- Rendered dynamically -->
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- DETAIL SIDEBAR PANEL -->
+    <aside class="detail-panel" id="task-detail-panel">
+      <div class="detail-header">
+        <span class="detail-label">Task Details</span>
+        <i data-lucide="x" class="detail-close-btn" onclick="TaskManager.closeDetailPanel()"></i>
+      </div>
+
+      <div class="detail-body">
+        <!-- Title Input -->
+        <div class="detail-row">
+          <input type="text" class="detail-title-input" id="detail-task-title"
+            onchange="TaskManager.updateActiveTaskDetail('title', this.value)">
+        </div>
+
+        <!-- Priority Selector -->
+        <div class="detail-row">
+          <span class="detail-label">Priority</span>
+          <select id="detail-task-priority" class="modal-input"
+            onchange="TaskManager.updateActiveTaskDetail('priority', this.value)">
+            <option value="P1">P1 - High Priority (Red)</option>
+            <option value="P2">P2 - Medium Priority (Orange)</option>
+            <option value="P3">P3 - Low Priority (Blue)</option>
+            <option value="P4">P4 - No Priority (Gray)</option>
+          </select>
+        </div>
+
+        <!-- Due Date -->
+        <div class="detail-row">
+          <span class="detail-label">Due Date</span>
+          <input type="date" id="detail-task-date" class="modal-input"
+            onchange="TaskManager.updateActiveTaskDetail('dueDate', this.value)">
+        </div>
+
+        <!-- Recurrence -->
+        <div class="detail-row">
+          <span class="detail-label">Recurrence</span>
+          <select id="detail-task-recurrence" class="modal-input"
+            onchange="TaskManager.updateActiveTaskDetail('recurrence', this.value)">
+            <option value="none">None</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        <!-- Time Block Scheduling -->
+        <div class="detail-row">
+          <span class="detail-label">Time Block (Day timeline)</span>
+          <div style="display: flex; gap: 8px;">
+            <input type="time" id="detail-task-time-start" class="modal-input" style="flex: 1;"
+              onchange="TaskManager.updateActiveTaskTimeBlock('start', this.value)">
+            <input type="time" id="detail-task-time-end" class="modal-input" style="flex: 1;"
+              onchange="TaskManager.updateActiveTaskTimeBlock('end', this.value)">
+          </div>
+        </div>
+
+        <!-- Project & Section Assignment -->
+        <div class="detail-row">
+          <span class="detail-label">Project List</span>
+          <select id="detail-task-project" class="modal-input"
+            onchange="TaskManager.handleDetailProjectChange(this.value)">
+            <!-- Project option list -->
+          </select>
+        </div>
+        <div class="detail-row" id="detail-section-row" style="display: none;">
+          <span class="detail-label">Section</span>
+          <select id="detail-task-section" class="modal-input"
+            onchange="TaskManager.updateActiveTaskDetail('sectionId', this.value)">
+            <!-- Sections list inside active project -->
+          </select>
+        </div>
+
+        <!-- Tags Input -->
+        <div class="detail-row">
+          <span class="detail-label">Tags (Comma separated)</span>
+          <input type="text" id="detail-task-tags" class="modal-input" placeholder="e.g. work, coding, client"
+            onchange="TaskManager.updateActiveTaskTags(this.value)">
+        </div>
+
+        <!-- Notes text -->
+        <div class="detail-row">
+          <span class="detail-label">Notes</span>
+          <textarea id="detail-task-notes" class="detail-textarea" placeholder="Add detailed notes here..."
+            onchange="TaskManager.updateActiveTaskDetail('notes', this.value)"></textarea>
+        </div>
+
+        <!-- Subtasks Checklist -->
+        <div class="detail-row">
+          <span class="detail-label">Subtasks</span>
+          <div class="detail-subtasks-list" id="detail-task-subtasks">
+            <!-- Dynamic checklist -->
+          </div>
+          <div class="add-subtask-row" style="margin-top: 8px;">
+            <input type="text" id="detail-add-subtask-input" class="add-subtask-input"
+              placeholder="Add subtask... Press Enter" onkeydown="TaskManager.handleAddSubtask(event)">
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer actions -->
+      <div class="detail-actions">
+        <div class="delete-task-btn" onclick="TaskManager.deleteActiveTask()">
+          <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i> Delete Task
+        </div>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-item active" id="m-nav-today" onclick="App.switchView('today')">
+      <i data-lucide="sun"></i>
+      <span>Today</span>
+    </div>
+    <div class="mobile-nav-item" id="m-nav-tomorrow" onclick="App.switchView('tomorrow')">
+      <i data-lucide="calendar-days"></i>
+      <span>Tomorrow</span>
+    </div>
+    <div class="mobile-nav-item" id="m-nav-calendar" onclick="App.switchView('calendar')">
+      <i data-lucide="calendar"></i>
+      <span>Calendar</span>
+    </div>
+    <div class="mobile-nav-item" id="m-nav-dashboard" onclick="App.switchView('dashboard')">
+      <i data-lucide="layout-dashboard"></i>
+      <span>Dashboard</span>
+    </div>
+    <div class="mobile-nav-item" id="m-nav-menu" onclick="App.toggleMobileMenu()">
+      <i data-lucide="menu"></i>
+      <span>Menu</span>
+    </div>
+  </nav>
+
+  <!-- MOBILE DRAWER OVERLAY -->
+  <div class="mobile-drawer-overlay" id="mobile-drawer" onclick="App.toggleMobileMenu()">
+    <div class="mobile-drawer-box" onclick="event.stopPropagation()">
+      <div class="mobile-drawer-header">
+        <span class="detail-label">Navigation & Lists</span>
+        <i data-lucide="x" class="icon-btn" onclick="App.toggleMobileMenu()"></i>
+      </div>
+      <div class="mobile-drawer-body">
+        <div class="nav-group">
+          <span class="nav-label">Focus Views</span>
+          <div class="nav-item" onclick="App.switchView('someday'); App.toggleMobileMenu();">
+            <i data-lucide="archive"></i>
+            <span>Someday Backlog</span>
+          </div>
+          <div class="nav-item" onclick="App.switchView('completed'); App.toggleMobileMenu();">
+            <i data-lucide="check-circle-2"></i>
+            <span>Completed Logs</span>
+          </div>
+        </div>
+
+        <div class="nav-group" style="display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span class="nav-label" style="margin-bottom: 0;">Projects & Lists</span>
+            <i data-lucide="plus" class="icon-btn" style="width: 14px; height: 14px; padding: 0;"
+              onclick="openAddProjectModal(); App.toggleMobileMenu();"></i>
+          </div>
+          <div class="project-list-container" id="mobile-projects-list">
+            <!-- Dynamic projects loaded here too -->
+          </div>
+        </div>
+
+        <div
+          style="display: flex; gap: 12px; margin-top: auto; border-top: 1px solid var(--border-color); padding-top: 16px;">
+          <button class="btn btn-muted"
+            style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;"
+            onclick="App.toggleTheme(); App.toggleMobileMenu();">
+            <i data-lucide="moon"></i> Dark Theme
+          </button>
+          <button class="btn btn-muted"
+            style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;"
+            onclick="openSettingsModal(); App.toggleMobileMenu();">
+            <i data-lucide="settings"></i> Sync Settings
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       MODALS OVERLAYS
+       ========================================== -->
+
+  <!-- 1. Firestore Settings Modal -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-box">
+      <div class="modal-title">Sync Settings</div>
+
+      <div class="modal-input-group">
+        <span class="detail-label">Firestore Collection</span>
+        <input type="text" class="modal-input" id="settings-collection" value="routine">
+      </div>
+
+      <div class="modal-input-group">
+        <span class="detail-label">Firestore Document ID</span>
+        <input type="text" class="modal-input" id="settings-doc" value="muthu">
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn btn-muted" onclick="closeSettingsModal()">Cancel</button>
+        <button class="btn btn-accent" onclick="saveSettings()">Save & Sync</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Add Project Modal -->
+  <div class="modal-overlay" id="add-project-modal">
+    <div class="modal-box">
+      <div class="modal-title">New Project / List</div>
+
+      <div class="modal-input-group">
+        <span class="detail-label">Project Name</span>
+        <input type="text" class="modal-input" id="new-project-name" placeholder="e.g. Work, Learn, Errands">
+      </div>
+
+      <div class="modal-input-group">
+        <span class="detail-label">Label Color</span>
+        <input type="color" class="modal-input" id="new-project-color" value="#c17f3b"
+          style="height: 40px; padding: 2px; cursor: pointer;">
+      </div>
+
+      <div class="modal-btns">
+        <button class="btn btn-muted" onclick="closeAddProjectModal()">Cancel</button>
+        <button class="btn btn-accent" onclick="TaskManager.createNewProject()">Create Project</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Edit Daily Routine Schedule Modal -->
+  <div class="modal-overlay" id="edit-routines-modal" style="overflow-y: auto;">
+    <div class="modal-box" style="width: 580px; max-width: 95%; margin: 40px auto;">
+      <div class="modal-title" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>Manage Routine Schedule</span>
+        <button class="btn btn-accent" style="padding: 4px 10px; font-size: 10px;"
+          onclick="RoutineManager.addNewRoutineFormItem()">+ Add Block</button>
+      </div>
+
+      <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+        Define daily scheduled activities. These populate the Today View.
+      </div>
+
+      <div id="routine-editor-rows-container"
+        style="display: flex; flex-direction: column; gap: 12px; max-height: 400px; overflow-y: auto; padding-right: 8px;">
+        <!-- Editable rows populated dynamically -->
+      </div>
+
+      <div class="modal-btns" style="border-top: 1px solid var(--border-color); padding-top: 16px; margin-top: 16px;">
+        <button class="btn btn-muted" onclick="RoutineManager.closeRoutineEditor()">Cancel</button>
+        <button class="btn btn-accent" onclick="RoutineManager.saveRoutinesFromEditor()">Save Daily Schedule</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       SCRIPTS IMPORT
+       ========================================== -->
+  <!-- Firebase Compatibility Library (compat) loaded via CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.min.js"></script>
+
+  <!-- App Modules -->
+  <script src="firebase-config.js"></script>
+  <script src="task-manager.js"></script>
+  <script src="routine-manager.js"></script>
+  <script src="calendar.js"></script>
+  <script src="drag-drop.js"></script>
+  <script src="app.js"></script>
+
+</body>
+
+</html>

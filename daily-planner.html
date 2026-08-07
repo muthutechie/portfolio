@@ -1,705 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Muthu's Daily Discipline</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
-  :root {
-    --ink: #0f0f12;
-    --paper: #f7f4ee;
-    --accent: #c17f3b;
-    --accent-light: #f0e0c8;
-    --muted: #6b6b72;
-    --line: #dddad4;
-    --done: #2d6a4f;
-    --done-light: #d8f3dc;
-    --block-bg: #ffffff;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--paper);
-    font-family: 'Inter', sans-serif;
-    color: var(--ink);
-    min-height: 100vh;
-    padding: 0 0 60px;
-  }
-
-  /* HEADER */
-  .header {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 36px 28px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), #e9a84c, var(--accent));
-  }
-  .header-eyebrow {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 10px;
-  }
-  .header-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px;
-    font-weight: 900;
-    line-height: 1.1;
-    margin-bottom: 6px;
-  }
-  .header-sub {
-    font-size: 12px;
-    color: #aaa;
-    font-weight: 300;
-    letter-spacing: 0.3px;
-  }
-  .date-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    margin-top: 14px;
-    display: inline-block;
-    border: 1px solid #333;
-    padding: 4px 10px;
-    border-radius: 2px;
-  }
-
-  /* QUOTE STRIP */
-  .quote-strip {
-    background: var(--accent);
-    color: white;
-    text-align: center;
-    padding: 10px 20px;
-    font-family: 'Playfair Display', serif;
-    font-size: 13px;
-    font-style: italic;
-    letter-spacing: 0.2px;
-  }
-
-  /* PROGRESS */
-  .progress-section {
-    padding: 20px 20px 0;
-  }
-  .progress-label {
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .progress-bar-bg {
-    background: var(--line);
-    border-radius: 2px;
-    height: 6px;
-    overflow: hidden;
-  }
-  .progress-bar-fill {
-    background: linear-gradient(90deg, var(--accent), #e9a84c);
-    height: 100%;
-    border-radius: 2px;
-    transition: width 0.5s ease;
-    width: 0%;
-  }
-
-  /* BLOCKS */
-  .blocks {
-    padding: 16px 16px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .block {
-    background: var(--block-bg);
-    border: 1.5px solid var(--line);
-    border-radius: 6px;
-    padding: 14px 14px;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    cursor: pointer;
-    transition: border-color 0.2s, background 0.2s, transform 0.1s;
-    -webkit-tap-highlight-color: transparent;
-    user-select: none;
-    position: relative;
-  }
-  .block:active { transform: scale(0.99); }
-  .block.done {
-    background: var(--done-light);
-    border-color: var(--done);
-  }
-  .block.optional {
-    border-style: dashed;
-  }
-
-  .block-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    min-width: 46px;
-    padding-top: 2px;
-    line-height: 1.4;
-  }
-  .block.done .block-time { color: var(--done); }
-
-  .block-icon {
-    font-size: 20px;
-    min-width: 28px;
-    text-align: center;
-    padding-top: 1px;
-  }
-
-  .block-body { flex: 1; }
-  .block-title {
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 1.3;
-    margin-bottom: 2px;
-  }
-  .block.done .block-title {
-    text-decoration: line-through;
-    color: var(--done);
-  }
-  .block-desc {
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.5;
-  }
-  .block.done .block-desc { color: var(--done); opacity: 0.7; }
-
-  .block-check {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    border: 2px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-    transition: background 0.2s, border-color 0.2s;
-    font-size: 12px;
-    color: transparent;
-  }
-  .block.done .block-check {
-    background: var(--done);
-    border-color: var(--done);
-    color: white;
-  }
-
-  /* SECTION LABEL */
-  .section-label {
-    padding: 18px 16px 4px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--accent-light);
-  }
-
-  /* WORK BLOCK (the gap) */
-  .work-block {
-    background: var(--ink);
-    border: none;
-    color: white;
-  }
-  .work-block .block-time { color: #999; }
-  .work-block .block-title { color: white; }
-  .work-block .block-desc { color: #aaa; }
-  .work-block .block-check { border-color: #444; }
-  .work-block.done .block-check { background: #4caf50; border-color: #4caf50; }
-  .work-block.done { background: #1a2e1c; border: 1.5px solid #2d6a4f; }
-  .work-block.done .block-title { color: #a8d5b5; text-decoration: line-through; }
-  .work-block.done .block-desc { color: #6aab7c; }
-
-  /* STREAK */
-  .streak-section {
-    margin: 20px 16px 0;
-    background: var(--ink);
-    border-radius: 6px;
-    padding: 16px;
-    color: white;
-  }
-  .streak-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-  .streak-dots {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .streak-dot {
-    width: 28px;
-    height: 28px;
-    border-radius: 4px;
-    background: #222;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 9px;
-    font-family: 'JetBrains Mono', monospace;
-    color: #555;
-    cursor: pointer;
-    transition: background 0.2s;
-    border: 1px solid #333;
-  }
-  .streak-dot.partial {
-    background: var(--accent-light);
-    color: var(--accent);
-    border-color: var(--accent-light);
-  }
-  .streak-dot.complete {
-    background: var(--accent);
-    color: white;
-    border-color: var(--accent);
-  }
-
-  /* SYNC STATUS */
-  .sync-status {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-align: center;
-    padding: 10px 16px 0;
-    letter-spacing: 0.5px;
-  }
-  .sync-status.error { color: #b23b3b; }
-  .sync-status.ok { color: var(--done); }
-  .streak-dot.today {
-    border: 2px solid var(--accent);
-    color: var(--accent);
-  }
-
-  /* RESET BUTTON */
-  .reset-btn {
-    display: block;
-    margin: 16px 16px 0;
-    width: calc(100% - 32px);
-    padding: 12px;
-    background: transparent;
-    border: 1.5px solid var(--line);
-    border-radius: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--muted);
-    cursor: pointer;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* COMPLETE BANNER */
-  .complete-banner {
-    display: none;
-    margin: 16px 16px 0;
-    background: var(--done);
-    border-radius: 6px;
-    padding: 16px;
-    color: white;
-    text-align: center;
-  }
-  .complete-banner.show { display: block; }
-  .complete-banner h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 18px;
-    margin-bottom: 4px;
-  }
-  .complete-banner p { font-size: 12px; opacity: 0.85; }
-
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-app-compat.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.12.2/firebase-firestore-compat.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trioviz Technologies · Upgrading Daily Discipline</title>
+  
+  <!-- Automatic Redirection to the new daily-planner directory -->
+  <meta http-equiv="refresh" content="1; url=./daily-planner/index.html" />
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600&display=swap');
+    
+    body {
+      background: #0f0f12;
+      color: #f7f4ee;
+      font-family: 'Inter', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(193, 127, 59, 0.1);
+      border-radius: 50%;
+      border-top-color: #c17f3b;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 24px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+    
+    p {
+      color: #a2aab8;
+      font-size: 14px;
+      margin-bottom: 24px;
+      font-weight: 300;
+      max-width: 320px;
+      line-height: 1.6;
+    }
+    
+    a {
+      color: #c17f3b;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid #c17f3b;
+      padding: 10px 20px;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    
+    a:hover {
+      background: #c17f3b;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
-<div class="header">
-  <div class="header-eyebrow">Trioviz Technologies · Daily Discipline</div>
-  <div class="header-title">Every Day<br>Non-Negotiable.</div>
-  <div class="header-sub">Consistency is not motivation. It is identity.</div>
-  <div class="date-badge" id="dateBadge">—</div>
-</div>
+  <div class="spinner"></div>
+  <h1>Upgrading Daily Discipline</h1>
+  <p>We have transformed Muthu's Daily Discipline into a modern TickTick & Zenkit-inspired productivity studio.</p>
+  <a href="./daily-planner/index.html">Launch Application</a>
 
-<div class="sync-status" id="syncStatus">connecting…</div>
+  <script>
+    // JavaScript fallback redirect in case meta-refresh is ignored
+    setTimeout(function() {
+      window.location.href = "./daily-planner/index.html";
+    }, 800);
+  </script>
 
-<div class="quote-strip">
-  "Take up one idea. Make it your life." — Swami Vivekananda
-</div>
-
-<div class="progress-section">
-  <div class="progress-label">
-    <span>Today's Completion</span>
-    <span id="progressText">0 / 12</span>
-  </div>
-  <div class="progress-bar-bg">
-    <div class="progress-bar-fill" id="progressBar"></div>
-  </div>
-</div>
-
-<!-- MORNING -->
-<div class="section-label">Morning Foundation</div>
-<div class="blocks" id="blocks-morning">
-
-  <div class="block" data-id="wake" onclick="toggle(this)">
-    <div class="block-time">5:30<br>AM</div>
-    <div class="block-icon">🌅</div>
-    <div class="block-body">
-      <div class="block-title">Wake Up</div>
-      <div class="block-desc">No snooze. Feet on floor. Begin.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="fresh" onclick="toggle(this)">
-    <div class="block-time">5:35<br>AM</div>
-    <div class="block-icon">🚿</div>
-    <div class="block-body">
-      <div class="block-title">Fresh Up</div>
-      <div class="block-desc">Brush, wash face, cold splash. 15 min.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="medmorn" onclick="toggle(this)">
-    <div class="block-time">5:50<br>AM</div>
-    <div class="block-icon">🧘</div>
-    <div class="block-body">
-      <div class="block-title">Morning Meditation</div>
-      <div class="block-desc">20 min. Silent sit. Breathe and anchor the day.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="reading" onclick="toggle(this)">
-    <div class="block-time">6:15<br>AM</div>
-    <div class="block-icon">📖</div>
-    <div class="block-body">
-      <div class="block-title">Book Reading</div>
-      <div class="block-desc">30–45 min. No phone. One book at a time.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="gym" onclick="toggle(this)">
-    <div class="block-time">7:00<br>AM</div>
-    <div class="block-icon">💪</div>
-    <div class="block-body">
-      <div class="block-title">Gym / Workout</div>
-      <div class="block-desc">60 min. Strength or cardio. Body is the first project.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="breakfast" onclick="toggle(this)">
-    <div class="block-time">8:15<br>AM</div>
-    <div class="block-icon">🍳</div>
-    <div class="block-body">
-      <div class="block-title">Breakfast</div>
-      <div class="block-desc">Eat slowly. No screen at the table.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-</div>
-
-<!-- DEEP WORK / THE GAP -->
-<div class="section-label">The Gap — Deep Work</div>
-<div class="blocks">
-
-  <div class="block work-block" data-id="deepwork1" onclick="toggle(this)">
-    <div class="block-time">9:00<br>AM</div>
-    <div class="block-icon">⚙️</div>
-    <div class="block-body">
-      <div class="block-title">Trioviz Work Block 1</div>
-      <div class="block-desc">Client delivery, code, proposals, or skill-building. Phone on silent.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block work-block" data-id="deepwork2" onclick="toggle(this)">
-    <div class="block-time">11:00<br>AM</div>
-    <div class="block-icon">📝</div>
-    <div class="block-body">
-      <div class="block-title">Trioviz Work Block 2</div>
-      <div class="block-desc">Writing, research, learning, Playbook updates, or new ideas. 2 hrs.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block work-block" data-id="lunch" onclick="toggle(this)">
-    <div class="block-time">1:00<br>PM</div>
-    <div class="block-icon">🍱</div>
-    <div class="block-body">
-      <div class="block-title">Lunch + Rest</div>
-      <div class="block-desc">Eat. 20 min rest or short walk. No reels, no movies.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block work-block" data-id="deepwork3" onclick="toggle(this)">
-    <div class="block-time">2:00<br>PM</div>
-    <div class="block-icon">🔧</div>
-    <div class="block-body">
-      <div class="block-title">Trioviz Work Block 3</div>
-      <div class="block-desc">Build, ship, or document. Or: social service / community call. 2 hrs.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-</div>
-
-<!-- EVENING -->
-<div class="section-label">Evening Wind-Down</div>
-<div class="blocks">
-
-  <div class="block" data-id="refresh" onclick="toggle(this)">
-    <div class="block-time">4:30<br>PM</div>
-    <div class="block-icon">🚶</div>
-    <div class="block-body">
-      <div class="block-title">Evening Refreshment</div>
-      <div class="block-desc">Walk outside, tea, or light stretching. No screens. 30 min.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="review" onclick="toggle(this)">
-    <div class="block-time">5:00<br>PM</div>
-    <div class="block-icon">🗒️</div>
-    <div class="block-body">
-      <div class="block-title">Reflect + Plan Tomorrow</div>
-      <div class="block-desc">What did I build today? What's the one priority tomorrow?</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="medevn" onclick="toggle(this)">
-    <div class="block-time">6:00<br>PM</div>
-    <div class="block-icon">🕯️</div>
-    <div class="block-body">
-      <div class="block-title">Evening Meditation</div>
-      <div class="block-desc">20 min. Release the day. Return to stillness.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="dinner" onclick="toggle(this)">
-    <div class="block-time">8:00<br>PM</div>
-    <div class="block-icon">🍽️</div>
-    <div class="block-body">
-      <div class="block-title">Dinner</div>
-      <div class="block-desc">Light meal. Eat with gratitude. Screen-free table.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="wind" onclick="toggle(this)">
-    <div class="block-time">8:30<br>PM</div>
-    <div class="block-icon">📵</div>
-    <div class="block-body">
-      <div class="block-title">Wind-Down</div>
-      <div class="block-desc">Read, journal, or light spiritual text. No reels after 9 PM.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-  <div class="block" data-id="sleep" onclick="toggle(this)">
-    <div class="block-time">10:00<br>PM</div>
-    <div class="block-icon">🌙</div>
-    <div class="block-body">
-      <div class="block-title">Sleep</div>
-      <div class="block-desc">Lights out. Phone away. 7–8 hrs non-negotiable.</div>
-    </div>
-    <div class="block-check">✓</div>
-  </div>
-
-</div>
-
-<!-- COMPLETE BANNER -->
-<div class="complete-banner" id="completeBanner">
-  <h3>🔥 Full Day Complete!</h3>
-  <p>You didn't lose a single block today. That's who you're becoming.</p>
-</div>
-
-<!-- STREAK -->
-<div class="streak-section">
-  <div class="streak-label">30-Day Streak</div>
-  <div class="streak-dots" id="streakDots"></div>
-</div>
-
-<button class="reset-btn" onclick="resetDay()">↺ Reset Today's Blocks</button>
-
-<script>
-  const TOTAL = 12;
-  const COMPLETE_THRESHOLD = 0.7; // 70%+ of blocks done = "complete" streak day
-
-  // ============================================================
-  // FIREBASE SETUP — replace the values below with YOUR project's
-  // config (Firebase Console → Project Settings → General → Your apps).
-  // See setup instructions provided separately.
-  // ============================================================
-  const firebaseConfig = {
-    apiKey: "AIzaSyDIRD8C4Jc3jtMsDWXmf_rdqvjLdiXht1Q",
-    authDomain: "daily-planner-3ccea.firebaseapp.com",
-    projectId: "daily-planner-3ccea",
-    storageBucket: "daily-planner-3ccea.firebasestorage.app",
-    messagingSenderId: "799880319637",
-    appId: "1:799880319637:web:bb3694871080936587819c",
-    measurementId: "G-9ZKR71XPL3"
-  };
-  
-  // A single shared document holds all your data. Change this if you
-  // ever want a different profile (e.g. testing) without touching real data.
-  const DOC_PATH = { collection: 'routine', doc: 'muthu' };
-
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const docRef = db.collection(DOC_PATH.collection).doc(DOC_PATH.doc);
-
-  // Date
-  const now = new Date();
-  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  document.getElementById('dateBadge').textContent =
-    `${days[now.getDay()]} · ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
-
-  const todayKey = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
-
-  let state = {};   // { "2026-7-6": { wake: true, fresh: false, ... }, ... }
-  let streak = {};  // { "2026-7-6": doneCount, ... }  (count, not boolean, for partial credit)
-  const syncStatus = document.getElementById('syncStatus');
-
-  function setSyncStatus(text, cls) {
-    syncStatus.textContent = text;
-    syncStatus.className = 'sync-status' + (cls ? ' ' + cls : '');
-  }
-
-  // Debounce writes so rapid taps don't spam Firestore
-  let saveTimer = null;
-  function scheduleSave() {
-    setSyncStatus('saving…');
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(async () => {
-      try {
-        await docRef.set({ state, streak });
-        setSyncStatus('synced ✓', 'ok');
-      } catch (err) {
-        console.error(err);
-        setSyncStatus('sync failed — check connection / Firebase setup', 'error');
-      }
-    }, 400);
-  }
-
-  async function loadFromFirestore() {
-    try {
-      const snap = await docRef.get();
-      if (snap.exists) {
-        const data = snap.data();
-        state = data.state || {};
-        streak = data.streak || {};
-      } else {
-        // First run ever — create the document
-        await docRef.set({ state: {}, streak: {} });
-      }
-      setSyncStatus('synced ✓', 'ok');
-    } catch (err) {
-      console.error(err);
-      setSyncStatus('offline — showing local view only, edits won\'t save', 'error');
-    }
-    render();
-  }
-
-  function toggle(el) {
-    const id = el.dataset.id;
-    if (!state[todayKey]) state[todayKey] = {};
-    state[todayKey][id] = !state[todayKey][id];
-    updateTodayStreakCount();
-    scheduleSave();
-    render();
-  }
-
-  function updateTodayStreakCount() {
-    const todayState = state[todayKey] || {};
-    const done = Object.values(todayState).filter(Boolean).length;
-    streak[todayKey] = done;
-  }
-
-  function render() {
-    const todayState = state[todayKey] || {};
-    const blocks = document.querySelectorAll('.block');
-    let done = 0;
-    blocks.forEach(b => {
-      const id = b.dataset.id;
-      if (todayState[id]) { b.classList.add('done'); done++; }
-      else b.classList.remove('done');
-    });
-    const pct = Math.round((done / TOTAL) * 100);
-    document.getElementById('progressBar').style.width = pct + '%';
-    document.getElementById('progressText').textContent = `${done} / ${TOTAL}`;
-
-    document.getElementById('completeBanner').classList.toggle('show', done === TOTAL);
-
-    renderStreak();
-  }
-
-  function renderStreak() {
-    const container = document.getElementById('streakDots');
-    container.innerHTML = '';
-    for (let i = 0; i < 30; i++) {
-      const d = new Date();
-      d.setDate(d.getDate() - (29 - i));
-      const k = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-      const dayDone = streak[k] || 0;
-      const dayPct = dayDone / TOTAL;
-
-      const dot = document.createElement('div');
-      dot.className = 'streak-dot';
-      if (k === todayKey) dot.classList.add('today');
-      if (dayPct >= COMPLETE_THRESHOLD) dot.classList.add('complete');
-      else if (dayPct > 0) dot.classList.add('partial');
-      dot.title = `${dayDone}/${TOTAL} blocks`;
-      dot.textContent = d.getDate();
-      container.appendChild(dot);
-    }
-  }
-
-  function resetDay() {
-    if (!state[todayKey]) return;
-    delete state[todayKey];
-    delete streak[todayKey];
-    scheduleSave();
-    render();
-  }
-
-  loadFromFirestore();
-</script>
 </body>
 </html>
